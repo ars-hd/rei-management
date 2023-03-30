@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 
 
 app.post('/add_lead', async (req, res) => {
-    let { client, first_name, last_name, email, mobile, address } = req.query;
+    let { client, first_name, last_name, email, mobile, address, notes } = req.query;
     try {
         const lead = new Lead({
             client: client,
@@ -28,7 +28,8 @@ app.post('/add_lead', async (req, res) => {
             last_name: last_name,
             email: email,
             mobile: mobile,
-            address: address
+            address: address,
+            notes: notes
         });
         await lead.save();
         res.status(201).send(lead);

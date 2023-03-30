@@ -41,6 +41,7 @@ const KPIsSchema = new monggose.Schema({
     date: { type: Date, default: Date.now },
     prospects: { type: Number, default: 0 },
     messages: { type: Number, default: 0 },
+    replied: { type: Number, default: 0 },
     leads: { type: Number, default: 0 },
     dnc: { type: Number, default: 0 },
     not_interested: { type: Number, default: 0 },

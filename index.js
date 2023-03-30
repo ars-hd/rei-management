@@ -15,4 +15,4 @@ app.get('/', (req, res) => {
 
 
 app.listen(PORT)
-module.exports.app = app;
+module.exports = app;

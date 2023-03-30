@@ -45,6 +45,14 @@ app.get('/leads', async (req, res) => {
         res.status(500).send(error.message);
     }
 });
+app.get('/leads/status', async (req, res) => {
+    try {
+        const leads = await Lead.find({}).where('status').equals(req.query.status);
+        res.status(200).send(leads);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
 
 
 app.post('/add_client', async (req, res) => {

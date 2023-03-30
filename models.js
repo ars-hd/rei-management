@@ -22,6 +22,7 @@ const ClientSchema = new monggose.Schema({
     email: { type: String, required: true },
     mobile: { type: String, required: true },
     company: { type: String, required: true },
+    password: { type: String, required: true },
 });
 
 

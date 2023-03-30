@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { Lead, Client } = require('./models');
+const { Lead, Client, Campaign, KPIs } = require('./models');
 const MONGODB_URI = process.env.MONGODB_URI;
 
 const app = express();
@@ -37,7 +37,6 @@ app.post('/add_lead', async (req, res) => {
     res.status(400).send(error.message);
     }
 })
-
 app.get('/leads', async (req, res) => {
     try {
         const leads = await Lead.find({}).where('client').equals(req.query.client);
@@ -51,7 +50,7 @@ app.get('/leads', async (req, res) => {
 app.post('/add_client', async (req, res) => {
     let { client, first_name, last_name, email, mobile, company } = req.query;
     try {
-        const client = new Client({
+        const cliente = new Client({
             client: client,
             first_name: first_name,
             last_name: last_name,
@@ -59,18 +58,76 @@ app.post('/add_client', async (req, res) => {
             mobile: mobile,
             company: company
         });
-        await client.save();
-        res.status(201).send(client);
+        await cliente.save();
+        res.status(201).send(cliente);
 
     } catch (error) {
     res.status(400).send(error.message);
     }
 });
-
 app.get('/clients', async (req, res) => {
     try {
         const clients = await Client.find();
         res.status(200).send(clients);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+app.post('/add_campaign', async (req, res) => {
+    let { client, name, status, prospects, messages } = req.query;
+    try {
+        const campaign = new Campaign({
+            client: client,
+            name: name,
+            status: status || "Active",
+            prospects: prospects,
+            messages: messages
+        });
+        await campaign.save();
+        res.status(201).send(campaign);
+
+    } catch (error) {
+    res.status(400).send(error.message);
+    }
+})
+app.get('/campaigns', async (req, res) => {
+    try {
+        const campaigns = await Campaign.find({}).where('client').equals(req.query.client);
+        res.status(200).send(campaigns);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+app.post('/add_kpis', async (req, res) => {
+    let { client, campaign, prospects, messages, leads, dnc, not_interested, replied, not_reachable, no_response, follow_up, type } = req.query;
+    try {
+        const kpis = new KPIs({
+            client: client,
+            campaign: campaign,
+            type: type || "Text",
+            prospects: prospects,
+            messages: messages,
+            leads: leads,
+            dnc: dnc,
+            not_interested: not_interested,
+            replied: replied,
+            not_reachable: not_reachable,
+            no_response: no_response,
+            follow_up: follow_up
+        });
+        await kpis.save();
+        res.status(201).send(kpis);
+
+    } catch (error) {
+    res.status(400).send(error.message);
+    }
+})
+app.get('/kpis', async (req, res) => {
+    try {
+        const kpis = await KPIs.find({}).where('client').equals(req.query.client);
+        res.status(200).send(kpis);
     } catch (error) {
         res.status(500).send(error.message);
     }

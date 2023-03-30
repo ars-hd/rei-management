@@ -48,7 +48,7 @@ app.get('/leads', async (req, res) => {
 
 
 app.post('/add_client', async (req, res) => {
-    let { client, first_name, last_name, email, mobile, company } = req.query;
+    let { client, first_name, last_name, email, mobile, company, password } = req.query;
     try {
         const cliente = new Client({
             client: client,
@@ -56,7 +56,8 @@ app.post('/add_client', async (req, res) => {
             last_name: last_name,
             email: email,
             mobile: mobile,
-            company: company
+            company: company,
+            password: password || 'P@ssword1'
         });
         await cliente.save();
         res.status(201).send(cliente);

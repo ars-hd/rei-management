@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 
 
 
-app.post('/add_lead', async (req, res) => {
+app.get('/add_lead', async (req, res) => {
     let { client, first_name, last_name, email, mobile, address, notes, status, campaign } = req.query;
     try {
         const lead = new Lead({
